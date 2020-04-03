@@ -1,0 +1,75 @@
+// This is the public API offered by the shopping cart entity.
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "cloudstate/entity_key.proto";
+import "google/api/annotations.proto";
+
+package com.harko.chess;
+
+message EnterGame {
+    string board_id = 1 [(.cloudstate.entity_key) = true];
+}
+
+message EnterGameResult {
+    bool canEnterGame = 1;
+    string side = 2;
+    string passCode = 3;
+}
+
+message MakeMoveResult {
+    bool valid = 1;
+}
+
+message MakeMove {
+    string board_id = 1 [(.cloudstate.entity_key) = true];
+    string source = 2;
+    string target = 3;
+    string passCode = 4;
+}
+
+message GetBoard {
+    string board_id = 1 [(.cloudstate.entity_key) = true];
+}
+
+message FullBoard {
+    string fen = 1;
+    string whitePassCode = 2;
+    string blackPassCode = 3;
+}
+
+message BoardView {
+    string fen = 1;
+}
+
+message MoveMade {
+    string source = 1;
+    string target = 2;
+}
+
+message UserEnteredGame {
+    string side = 2;
+    string passCode = 3;
+}
+
+service ChessGame {
+
+    rpc CEnterGame(EnterGame) returns (EnterGameResult) {
+        option (google.api.http) = {
+            post: "/game/{board_id}"
+        };
+    }
+
+    rpc CMakeMove(MakeMove) returns (MakeMoveResult) {
+        option (google.api.http) = {
+            post: "/game/{board_id}/move",
+            body: "*"
+        };
+    }
+
+    rpc CGetBoard(GetBoard) returns (BoardView) {
+        option (google.api.http) = {
+            get: "/board/{board_id}"
+        };
+    }
+}

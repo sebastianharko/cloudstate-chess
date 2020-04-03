@@ -1,0 +1,14 @@
+# Route for friends app
+apiVersion: cloudstate.io/v1alpha1
+kind: Route
+metadata:
+  name: chess-routes
+spec:
+  http:
+  - name: chess 
+    match:
+    - uri:
+        prefix: /
+    route:
+      service: chess 
+
