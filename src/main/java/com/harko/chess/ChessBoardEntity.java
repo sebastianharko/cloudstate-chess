@@ -15,20 +15,20 @@ import java.util.UUID;
 public class ChessBoardEntity {
     private final String entityId;
 
-    private String whiteSidePassCode = null;
-    private String blackPlayerSideCode = null;
+    String whiteSidePassCode = null;
+    String blackPlayerSideCode = null;
 
-    private Board board = new Board();
+    Board board = new Board();
 
     public ChessBoardEntity(@EntityId String entityId) {
         this.entityId = entityId;
     }
 
-    private String getBoardAsFen() {
+    String getBoardAsFen() {
         return board.getFen();
     }
 
-    private String getTurn() {
+    String getTurn() {
         return board.getSideToMove().value().toLowerCase();
     }
 
@@ -48,7 +48,7 @@ public class ChessBoardEntity {
         this.whiteSidePassCode = board.getWhitePassCode();
     }
 
-    private boolean isValidPassCode(String passCode) {
+    boolean isValidPassCode(String passCode) {
         if (passCode.equals(blackPlayerSideCode)) {
             return getTurn().equals("black");
         } else if (passCode.equals(whiteSidePassCode)) {
@@ -58,7 +58,7 @@ public class ChessBoardEntity {
         }
     }
 
-    private boolean isValidMove(String source, String target) {
+    boolean isValidMove(String source, String target) {
         return board.isMoveLegal(new Move(Square.fromValue(source), Square.fromValue(target)), true);
     }
 
